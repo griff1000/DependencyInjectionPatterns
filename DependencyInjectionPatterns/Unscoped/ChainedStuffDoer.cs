@@ -18,16 +18,24 @@
         /// <param name="nextStuffDoer">The next IDoStuff implementation in the decorator chain</param>
         public ChainedStuffDoer(IDoStuff nextStuffDoer, ILogger<ChainedStuffDoer> logger)
         {
-            _nextStuffDoer = nextStuffDoer ?? throw new ArgumentNullException(nameof(nextStuffDoer));
+            _nextStuffDoer = nextStuffDoer;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
+        #region optional constructors
+
+        public ChainedStuffDoer(ILogger<ChainedStuffDoer> logger) : this(null, logger)
+        {
+        }
+
+        #endregion
 
         /// <summary>
         /// Calls the next IDoStuff implementation in the chain then decorates the output of that with its own implementation
         /// </summary>
         public int DoSomethingWithNumber(int x)
         {
-            var intermediateResult = _nextStuffDoer.DoSomethingWithNumber(x);
+            var intermediateResult = _nextStuffDoer?.DoSomethingWithNumber(x) ?? x;
             _logger.LogInformation("Did something in ChainedStuffDoer");
             return intermediateResult * 2;
         }
