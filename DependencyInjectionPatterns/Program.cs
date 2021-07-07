@@ -16,35 +16,31 @@
 
             #region unscoped DI
 
-            //Console.WriteLine("********** Unscoped DI **********");
+            Console.WriteLine("********** Unscoped DI **********");
 
-            //#region Standard inheritance DI
+            #region Standard inheritance DI
 
-            //serviceCollection.AddSingleton<IDoStuff, AdvancedStuffDoer>();
+            serviceCollection.AddSingleton<IDoStuff, AdvancedStuffDoer>();
 
-            //#endregion
+            #endregion
 
-            //#region Chained DI
+            #region Chained DI (decorator pattern)
 
-            ////serviceCollection.AddSingleton<IDoStuff>(sp =>
-            ////{
-            ////    var baseStuffDoer = new BasicStuffDoer();
-            ////    var logger = sp.GetRequiredService<ILogger<ChainedStuffDoer>>();
-            ////    var chainedStuffDoer = new ChainedStuffDoer(baseStuffDoer, logger);
-            ////    return chainedStuffDoer;
-            ////});
+            //serviceCollection.AddSingleton<IDoStuff>(sp =>
+            //{
+            //    var baseStuffDoer = new BasicStuffDoer();
+            //    var logger = sp.GetRequiredService<ILogger<ChainedStuffDoer>>();
+            //    var chainedStuffDoer = new ChainedStuffDoer(baseStuffDoer, logger);
+            //    return chainedStuffDoer;
+            //});
 
 
-            //#endregion
+            #endregion
 
-            //#region use whatever IDoStuff I've registered
-
-            //var serviceProvider = serviceCollection.BuildServiceProvider();
-            //var stuffDoer = serviceProvider.GetService<IDoStuff>();
-            //Console.WriteLine(stuffDoer.DoSomethingWithNumber(5));
-            //Console.ReadKey();
-
-            //#endregion
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var stuffDoer = serviceProvider.GetService<IDoStuff>();
+            Console.WriteLine(stuffDoer.DoSomethingWithNumber(5));
+            Console.ReadKey();
 
             #endregion
 
@@ -68,18 +64,18 @@
 
             #region Capability DI
 
-            Console.WriteLine();
-            Console.WriteLine("********** Capability DI **********");
+            //Console.WriteLine();
+            //Console.WriteLine("********** Capability DI **********");
 
-            serviceCollection.AddSingleton<IDoStuffWithCapability>(new AStuffDoerWithCapability(num => num < 10));
-            serviceCollection.AddSingleton<IDoStuffWithCapability>(new AnotherStuffDoerWithCapability(num => num >= 10));
-            serviceCollection.AddSingleton<IUseDoStuff, SomethingThatUsesStuffDoers>();
+            //serviceCollection.AddSingleton<IDoStuffWithCapability>(new AStuffDoerWithCapability(num => num < 10));
+            //serviceCollection.AddSingleton<IDoStuffWithCapability>(new AnotherStuffDoerWithCapability(num => num >= 10));
+            //serviceCollection.AddSingleton<IUseDoStuff, SomethingThatUsesStuffDoers>();
 
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-            var stuffDoerUser = serviceProvider.GetService<IUseDoStuff>();
+            //var serviceProvider = serviceCollection.BuildServiceProvider();
+            //var stuffDoerUser = serviceProvider.GetService<IUseDoStuff>();
 
-            stuffDoerUser.UseDoStuff(5);
-            stuffDoerUser.UseDoStuff(15);
+            //stuffDoerUser.UseDoStuff(5);
+            //stuffDoerUser.UseDoStuff(15);
 
             #endregion
         }
